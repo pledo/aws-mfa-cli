@@ -1,0 +1,11 @@
+Description:
+-----------
+
+x- Now the script can edit the only the [mfa] block of the credentials file
+- Now the script should to warn the user about the ~/.aws/credentials with
+it's empty.
+
+
+x- Create a print to warning about export the asws keys or fill the credentials file
+
+- Ask the user about the mfa arn, create the cli structure
