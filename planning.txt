@@ -11,6 +11,8 @@ x- Ask the user about the mfa arn, create the cli structure
 
 x- Remove the ~/.aws_test*/credentials paths
 
+- Create an cli argument for the region, as a required argument
+
 - Organize the code
 
 - Create the installation resources
