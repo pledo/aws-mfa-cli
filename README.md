@@ -2,7 +2,7 @@
 
 1- CLone the project
 ```
- $git clone  https://github.com/pledo/aws-mfa-cli.git
+ $ git clone  https://github.com/pledo/aws-mfa-cli.git
 ```
 
 2-  Configure your ~/.aws/credentials with your keys and region, for example:
@@ -26,13 +26,23 @@ $ export AWS_ACCESS_KEY_ID=AKASDASDASDASD ; export AWS_SECRET_ACCESS_KEY=HzS/ASD
 $ python3 aws_cli_mfa.py --mfa arn:aws:iam::006033402816:mfa/devops_test --region=eu-central-2
 ```
 
-4- Now Check your ~/.aws/credentials, It should have a profile block like that:
+4- Check your ~/.aws/credentials, It should have a profile block like that:
 ```
+[default]
+Here should have your default configuration.
+THe script will just create the [mfa] block
+
 [mfa]
 AWS_ACCESS_KEY_ID=< With the temporary key >
 AWS_SECRET_ACCESS_KEY=<...>
 AWS_SESSION_TOKEN=<...>
 AWS_DEFAULT_REGION=<...>
+```
+
+5- Test the aws cli with the mfa profile, for example:
+
+```
+$ aws --profile mfa s3 ls
 ```
 
 RoadMap
