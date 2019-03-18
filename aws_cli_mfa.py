@@ -16,7 +16,7 @@ parser.add_argument('--mfa', action='store', dest='mfa_arn',
 # ------------  Environments ------------ #
 
 ARGS = parser.parse_args()
-AWS_CREDENTIALS_FOLDER = environ["HOME"] + "/" + ".aws_test1"
+AWS_CREDENTIALS_FOLDER = environ["HOME"] + "/" + ".aws"
 AWS_CREDENTIALS_DESTINATION_FILE =  AWS_CREDENTIALS_FOLDER + "/"  + "credentials"
 AWS_CREDENTIALS_TEMPLATE = dirname(realpath(__file__)) + "/default_template/credentials"
 AWS_CREDENTIALS_TEMPLATE_FOLDER = dirname(realpath(__file__)) + "/templates"
