@@ -13,6 +13,10 @@ parser = argparse.ArgumentParser()
 parser.add_argument('--mfa', action='store', dest='mfa_arn',
                     help='Provide the mfa arn: arn:aws:iam::<aws-account-number>:mfa/<user-name>')
 
+parser.add_argument('--region', action='store', dest='region',
+                    help='Provide a aws region ex: eu-central-1, us-east-1 ...')
+
+
 # ------------  Environments ------------ #
 
 ARGS = parser.parse_args()
@@ -23,6 +27,7 @@ AWS_CREDENTIALS_TEMPLATE_FOLDER = dirname(realpath(__file__)) + "/templates"
 
 
 MFA_SERIAL_NUMBER=ARGS.mfa_arn
+AWS_REGION_CREDENTIALS=ARGS.region
 
 # ----------------------------------------- #
 # Warning messages
@@ -85,6 +90,7 @@ def get_temp_credentials():
   temp_credentials["AWS_ACCESS_KEY"] = raw_temp_credentials["AccessKeyId"]
   temp_credentials["AWS_SECRET_ACCESS_KEY"] = raw_temp_credentials["SecretAccessKey"]
   temp_credentials["SESSION_TOKEN"] = raw_temp_credentials["SessionToken"]
+  temp_credentials["AWS_REGION"] =  AWS_REGION_CREDENTIALS
   #print(temp_credentials)
   return(temp_credentials)
 
