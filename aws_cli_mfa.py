@@ -10,10 +10,10 @@ from sys import exit
 # ----------------------------------------- #
 parser = argparse.ArgumentParser()
 
-parser.add_argument('--mfa', action='store', dest='mfa_arn',
+parser.add_argument('--mfa', action='store', dest='mfa_arn', required=True,
                     help='Provide the mfa arn: arn:aws:iam::<aws-account-number>:mfa/<user-name>')
 
-parser.add_argument('--region', action='store', dest='region',
+parser.add_argument('--region', action='store', dest='region', required=True,
                     help='Provide a aws region ex: eu-central-1, us-east-1 ...')
 
 
