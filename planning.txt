@@ -9,3 +9,5 @@ it's empty.
 x- Create a print to warning about export the asws keys or fill the credentials file
 
 - Ask the user about the mfa arn, create the cli structure
+
+- Remove the ~/.aws_test*/credentials paths
