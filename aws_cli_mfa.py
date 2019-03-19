@@ -1,23 +1,25 @@
 #!/bin/python3
-import argparse
-import boto3
-from jinja2 import Environment, FileSystemLoader
-from os import environ, mkdir, chdir, getcwd
-from os.path import isdir, exists, dirname, realpath
-from shutil import copyfile
-from sys import exit
 
-# ----------------------------------------- #
+import boto3
+import argparse
+from sys import exit
+from shutil import copyfile
+from os import environ, mkdir, chdir, getcwd
+from jinja2 import Environment, FileSystemLoader
+from os.path import isdir, exists, dirname, realpath
+
+# -------------- Argparse configuration --------------- #
+
 parser = argparse.ArgumentParser()
 
 parser.add_argument('--mfa', action='store', dest='mfa_arn', required=True,
-                    help='Provide the mfa arn: arn:aws:iam::<aws-account-number>:mfa/<user-name>')
+      help='Provide the mfa arn: arn:aws:iam::<aws-account-number>:mfa/<user-name>')
 
 parser.add_argument('--region', action='store', dest='region', required=True,
                     help='Provide a aws region ex: eu-central-1, us-east-1 ...')
 
 
-# ------------  Environments ------------ #
+# ------------  Variables ---------------------------- #
 
 ARGS = parser.parse_args()
 AWS_CREDENTIALS_FOLDER = environ["HOME"] + "/" + ".aws"
@@ -29,55 +31,53 @@ AWS_CREDENTIALS_TEMPLATE_FOLDER = dirname(realpath(__file__)) + "/templates"
 MFA_SERIAL_NUMBER=ARGS.mfa_arn
 AWS_REGION_CREDENTIALS=ARGS.region
 
-# ----------------------------------------- #
-# Warning messages
+# ----------- Warning messages ------------------------#
 
 WARNING_CREDENTIALS_MESSAGE = "[default]\nAWS_ACCESS_KEY_ID=< AWS_ACCESS_KEY > \
-  \nAWS_SECRET_ACCESS_KEY=< AWS_SECRET_ACCESS_KEY >\nAWS_DEFAULT_REGION=eu-central-1\n"
+\nAWS_SECRET_ACCESS_KEY=< AWS_SECRET_ACCESS_KEY >\nAWS_DEFAULT_REGION=eu-central-1\n"
 
 
 WARNING_EXPORT = "\nexport AWS_ACCESS_KEY_ID=< YOUR-ACCESS-KEYS-HERE >\
-  \nexport AWS_SECRET_ACCESS_KEY=< YOUR-SECRET-KEYS-HERE>\nexport AWS_DEFAULT_REGION=eu-central-1\n"
+\nexport AWS_SECRET_ACCESS_KEY=< YOUR-SECRET-KEYS-HERE>\nexport \
+AWS_DEFAULT_REGION=eu-central-1\n"
 
 
-WARNING_AFTER_CREATED_CREDENTIALS_FILE = "The aws credentials file was created.\nPlease put your credentials there:\
-  ~/.aws/credentials\n\nFor example: \n\n{} \nAfter that, run the aws_cli_mfa.py again"
+WARNING_AFTER_CREATED_CREDENTIALS_FILE = "The aws credentials file was created.\n\
+Please put your credentials there: ~/.aws/credentials\n\nFor example: \n\n{} \n\
+After that, run the aws_cli_mfa.py again"
 
 
-WARNING_GREETINGS = "\n### Don't forget to export your AWS credentials or fill the ~/.aws/credentials file with It\n"
+WARNING_GREETINGS = "\n### Don't forget to export your AWS \
+credentials or fill the ~/.aws/credentials file with It\n"
 
- #----------------------------------------- #
+
+#------------- check_aws_credentials_file ---------------------- #
 
 def check_aws_credentials_file():
   """Checking if there is a ~/.aws/credentials file"""
-  #print("\n### Running check_aws_credentials_file function ###\n")
-
+  
   if isdir(AWS_CREDENTIALS_FOLDER) == False:
     mkdir(AWS_CREDENTIALS_FOLDER)
     copyfile(AWS_CREDENTIALS_TEMPLATE, AWS_CREDENTIALS_DESTINATION_FILE)
 
-    print(WARNING_GREETINGS)
-    print(WARNING_EXPORT)
-    print(WARNING_AFTER_CREATED_CREDENTIALS_FILE.format(WARNING_CREDENTIALS_MESSAGE))
-
+    print(WARNING_GREETINGS + "\n" + WARNING_EXPORT + "\n" + 
+       WARNING_AFTER_CREATED_CREDENTIALS_FILE.format(WARNING_CREDENTIALS_MESSAGE))
     exit(0)
 
   elif exists(AWS_CREDENTIALS_DESTINATION_FILE) == False:
     copyfile(AWS_CREDENTIALS_TEMPLATE, AWS_CREDENTIALS_DESTINATION_FILE)
     
-    print(WARNING_GREETINGS)
-    print(WARNING_EXPORT)
-    print(WARNING_AFTER_CREATED_CREDENTIALS_FILE.format(WARNING_CREDENTIALS_MESSAGE))
-
+    print(WARNING_GREETINGS + "\n" + WARNING_EXPORT + "\n" + 
+       WARNING_AFTER_CREATED_CREDENTIALS_FILE.format(WARNING_CREDENTIALS_MESSAGE))
     exit(0)
 
-# ----------------------------------------- #
+# -------------- Getting temporary credentials --------------- #
 
-#dest_config_file = '.aws/credentials'
 dest_config_file = AWS_CREDENTIALS_DESTINATION_FILE
 
 def get_temp_credentials():
-  # Prompt for MFA time-based one-time password (TOTP)
+  """ Getting temporary credentials """
+
   mfa_TOTP = input("Enter the MFA code: ")
 
   client = boto3.client('sts')
@@ -93,23 +93,18 @@ def get_temp_credentials():
   temp_credentials["AWS_SECRET_ACCESS_KEY"] = raw_temp_credentials["SecretAccessKey"]
   temp_credentials["SESSION_TOKEN"] = raw_temp_credentials["SessionToken"]
   temp_credentials["AWS_REGION"] =  AWS_REGION_CREDENTIALS
-  #print(temp_credentials)
+
   return(temp_credentials)
 
+# -------- Configuring the temporary credentials -------- #
 
 def configuring_temporary_credentials(temp_credentials):
   """ Configuring the .aws/credentials """
-  #print(" Running the configuring_temporary_credentials function ")
 
-  #template_dir = AWS_CREDENTIALS_TEMPLATE_FOLDER
   template_dir = 'templates'
 
-  # Destination config file, usually = .aws/credentials
-  #print(AWS_CREDENTIALS_TEMPLATE_FOLDER)
   file_loader = FileSystemLoader(AWS_CREDENTIALS_TEMPLATE_FOLDER)
   env = Environment(loader=file_loader)
-
-  #print("\n ### Template files:{}###\n".format(file_loader.list_templates()))
 
   template_file_name = file_loader.list_templates()[0]
   template = env.get_template(template_file_name)
@@ -117,6 +112,8 @@ def configuring_temporary_credentials(temp_credentials):
   output = template.render(credentials=temp_credentials)
   with open(dest_config_file, "a") as f:
        f.write(output)
+
+# -------- Cleaning the config file --------------------- #
 
 def cleaning_config_file(lines):
   """ Cleaning the config file"""
@@ -131,7 +128,7 @@ def cleaning_config_file(lines):
   with open(dest_config_file, "w") as f:
        f.writelines(lines)
 
-# ----------------------------------------
+# -------- Main function -------------------------------- #
 
 def main():
   check_aws_credentials_file()
@@ -140,11 +137,12 @@ def main():
     lines = file.readlines()
 
   if '[mfa]\n' in lines:
-    #print("Let's clean the .aws/credentials")
     cleaning_config_file(lines)
+
   temp_credentials = get_temp_credentials()
   configuring_temporary_credentials(temp_credentials)
 
-#----------------------------------------
+#------------------------------------------------------- #
+
 if __name__ == "__main__":
   main()
