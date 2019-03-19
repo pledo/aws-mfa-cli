@@ -1,11 +1,11 @@
-##Usage:
+## Usage:
 
-1- CLone the project
+1- Clone the project and enter into the project's folder.
 ```
- $ git clone  https://github.com/pledo/aws-mfa-cli.git
+ $ git clone  https://github.com/pledo/aws-mfa-cli.git ; cd aws-mfa-cli
 ```
 
-2-  Configure your ~/.aws/credentials with your keys and region, for example:
+2- Configure your ~/.aws/credentials with your keys and region, for example:
 ```
 ~/.aws.credentials:
 
@@ -17,13 +17,13 @@ AWS_DEFAULT_REGION=us-east-1
 Or export your keys, running this line in your terminal
 
 ```
-$ export AWS_ACCESS_KEY_ID=AKASDASDASDASD ; export AWS_SECRET_ACCESS_KEY=HzS/ASDASDASDSADASDQWEQWEQWEQWE ; export AWS_DEFAULT_REGION=us-east-1
+$ export AWS_ACCESS_KEY_ID=<Your-Keys-Here> ; export AWS_SECRET_ACCESS_KEY=<Your-Keys-Here> ; export AWS_DEFAULT_REGION=<AWS-Region-Here>
 ```
 
 3- Run the command providing your mfa arn and region
 
 ```
-$ python3 aws_cli_mfa.py --mfa arn:aws:iam::006033402816:mfa/devops_test --region=eu-central-2
+$ python3 aws_cli_mfa.py --mfa arn:aws:iam::<Account-Number>:mfa/<Your-User-Name> --region=us-east-1
 ```
 
 4- Check your ~/.aws/credentials, It should have a profile block like that:

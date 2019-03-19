@@ -55,6 +55,7 @@ def check_aws_credentials_file():
   if isdir(AWS_CREDENTIALS_FOLDER) == False:
     mkdir(AWS_CREDENTIALS_FOLDER)
     copyfile(AWS_CREDENTIALS_TEMPLATE, AWS_CREDENTIALS_DESTINATION_FILE)
+
     print(WARNING_GREETINGS)
     print(WARNING_EXPORT)
     print(WARNING_AFTER_CREATED_CREDENTIALS_FILE.format(WARNING_CREDENTIALS_MESSAGE))
@@ -63,6 +64,7 @@ def check_aws_credentials_file():
 
   elif exists(AWS_CREDENTIALS_DESTINATION_FILE) == False:
     copyfile(AWS_CREDENTIALS_TEMPLATE, AWS_CREDENTIALS_DESTINATION_FILE)
+    
     print(WARNING_GREETINGS)
     print(WARNING_EXPORT)
     print(WARNING_AFTER_CREATED_CREDENTIALS_FILE.format(WARNING_CREDENTIALS_MESSAGE))
@@ -118,20 +120,12 @@ def configuring_temporary_credentials(temp_credentials):
 
 def cleaning_config_file(lines):
   """ Cleaning the config file"""
-  #print(" Running the cleaning_config_file function")
-
-  # Before write the mfa data we should to remove the old one if it exist
-
-  #print("Lines:{}".format(lines))
 
   mfa_index = lines.index("[mfa]\n")
   mfa_end_index = mfa_index + 5
-  #print("Mfa start index:{}".format(mfa_index))
-  #print("Mfa end index:{}".format(mfa_end_index))
 
   start_lines = lines[:mfa_index]
-  #print("Start Lines:{}".format(start_lines))
-
+  
   end_lines = lines[mfa_end_index:]
   lines = start_lines + end_lines
   with open(dest_config_file, "w") as f:
