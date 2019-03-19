@@ -13,10 +13,12 @@ x- Remove the ~/.aws_test*/credentials paths
 
 x- Create an cli argument for the region, as a required argument
 
-- Organize the code
+x- Organize the code
 
 - Create the installation resources
 
 x- Create the ReadMe if all the usage instructions
 
 - Release
+
+- Tests

@@ -8,7 +8,7 @@ from os import environ, mkdir, chdir, getcwd
 from jinja2 import Environment, FileSystemLoader
 from os.path import isdir, exists, dirname, realpath
 
-# -------------- Argparse configuration --------------- #
+# -------- Argparse configuration --------------------- #
 
 parser = argparse.ArgumentParser()
 
@@ -19,7 +19,7 @@ parser.add_argument('--region', action='store', dest='region', required=True,
                     help='Provide a aws region ex: eu-central-1, us-east-1 ...')
 
 
-# ------------  Variables ---------------------------- #
+# ------------  Variables ----------------------------- #
 
 ARGS = parser.parse_args()
 AWS_CREDENTIALS_FOLDER = environ["HOME"] + "/" + ".aws"
@@ -31,7 +31,7 @@ AWS_CREDENTIALS_TEMPLATE_FOLDER = dirname(realpath(__file__)) + "/templates"
 MFA_SERIAL_NUMBER=ARGS.mfa_arn
 AWS_REGION_CREDENTIALS=ARGS.region
 
-# ----------- Warning messages ------------------------#
+# -------- Warning messages ---------------------------- #
 
 WARNING_CREDENTIALS_MESSAGE = "[default]\nAWS_ACCESS_KEY_ID=< AWS_ACCESS_KEY > \
 \nAWS_SECRET_ACCESS_KEY=< AWS_SECRET_ACCESS_KEY >\nAWS_DEFAULT_REGION=eu-central-1\n"
@@ -51,7 +51,7 @@ WARNING_GREETINGS = "\n### Don't forget to export your AWS \
 credentials or fill the ~/.aws/credentials file with It\n"
 
 
-#------------- check_aws_credentials_file ---------------------- #
+#--------- check_aws_credentials_file ----------------- #
 
 def check_aws_credentials_file():
   """Checking if there is a ~/.aws/credentials file"""
@@ -71,7 +71,7 @@ def check_aws_credentials_file():
        WARNING_AFTER_CREATED_CREDENTIALS_FILE.format(WARNING_CREDENTIALS_MESSAGE))
     exit(0)
 
-# -------------- Getting temporary credentials --------------- #
+# -------- Getting temporary credentials -------------- #
 
 dest_config_file = AWS_CREDENTIALS_DESTINATION_FILE
 
@@ -96,7 +96,7 @@ def get_temp_credentials():
 
   return(temp_credentials)
 
-# -------- Configuring the temporary credentials -------- #
+# -------- Configuring the temporary credentials ------ #
 
 def configuring_temporary_credentials(temp_credentials):
   """ Configuring the .aws/credentials """
@@ -113,7 +113,7 @@ def configuring_temporary_credentials(temp_credentials):
   with open(dest_config_file, "a") as f:
        f.write(output)
 
-# -------- Cleaning the config file --------------------- #
+# -------- Cleaning the config file ------------------- #
 
 def cleaning_config_file(lines):
   """ Cleaning the config file"""
@@ -128,7 +128,7 @@ def cleaning_config_file(lines):
   with open(dest_config_file, "w") as f:
        f.writelines(lines)
 
-# -------- Main function -------------------------------- #
+# -------- Main function ------------------------------ #
 
 def main():
   check_aws_credentials_file()
@@ -142,7 +142,7 @@ def main():
   temp_credentials = get_temp_credentials()
   configuring_temporary_credentials(temp_credentials)
 
-#------------------------------------------------------- #
+#------------------------------------------------------ #
 
 if __name__ == "__main__":
   main()
