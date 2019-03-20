@@ -5,7 +5,12 @@
  $ git clone  https://github.com/pledo/aws-mfa-cli.git ; cd aws-mfa-cli
 ```
 
-2- Configure your ~/.aws/credentials with your keys and region, for example:
+2- Intall the command cli
+```
+$ python3 setup.py install
+```
+
+3- Configure your ~/.aws/credentials with your keys and region, for example:
 ```
 ~/.aws.credentials:
 
@@ -20,13 +25,13 @@ Or export your keys, running this line in your terminal
 $ export AWS_ACCESS_KEY_ID=<Your-Keys-Here> ; export AWS_SECRET_ACCESS_KEY=<Your-Keys-Here> ; export AWS_DEFAULT_REGION=<AWS-Region-Here>
 ```
 
-3- Run the command providing your mfa arn and region
+4- Run the command providing your mfa arn and region
 
 ```
-$ python3 aws_cli_mfa.py --mfa arn:aws:iam::<Account-Number>:mfa/<Your-User-Name> --region=us-east-1
+$ aws-mfa-cli --mfa arn:aws:iam::<Account-Number>:mfa/<Your-User-Name> --region=us-east-1
 ```
 
-4- Check your ~/.aws/credentials, It should have a profile block like that:
+5- Check your ~/.aws/credentials, It should have a profile block like that:
 ```
 [default]
 Here should have your default configuration.
@@ -39,7 +44,7 @@ AWS_SESSION_TOKEN=<...>
 AWS_DEFAULT_REGION=<...>
 ```
 
-5- Test the aws cli with the mfa profile, for example:
+6- Test the aws cli with the mfa profile, for example:
 
 ```
 $ aws --profile mfa s3 ls
