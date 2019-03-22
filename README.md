@@ -57,7 +57,7 @@ x-Remove only the [mfa] block, keep everything after.
 x-Create a description for README explaing the script. 
 x-Create the cli option for mfa arn and other most important options. 
 
--Take the aws region from the env variable: AWS_DEFAULT_REGION, if it exists. 
--Take the aws region from aws/credentials file: AWS_DEFAULT_REGION, if it exists. 
--Tests
--Profile: mfa-dev, mfa-stageß
+- Take the aws region from the env variable: AWS_DEFAULT_REGION, if it exists. 
+- Take the aws region from aws/credentials file: AWS_DEFAULT_REGION, if it exists. 
+- Tests
+- Profile: mfa-dev, mfa-stage
