@@ -50,12 +50,14 @@ AWS_DEFAULT_REGION=<...>
 $ aws --profile mfa s3 ls
 ```
 
-RoadMap
+RoadMap:
 
-x- Remove only the [mfa] block, keep everything after. 
-x- Create a description for README explaing the script. 
-x- Create the cli option for mfa arn and other most important options. 
-- Take the aws region from the env variable: AWS_DEFAULT_REGION, if it exists. 
-- Take the aws region from aws/credentials file: AWS_DEFAULT_REGION, if it exists. 
-- Tests
-- Instalation config
+x-Instalation config
+x-Remove only the [mfa] block, keep everything after. 
+x-Create a description for README explaing the script. 
+x-Create the cli option for mfa arn and other most important options. 
+
+-Take the aws region from the env variable: AWS_DEFAULT_REGION, if it exists. 
+-Take the aws region from aws/credentials file: AWS_DEFAULT_REGION, if it exists. 
+-Tests
+-Profile: mfa-dev, mfa-stageß
