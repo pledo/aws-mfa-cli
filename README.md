@@ -60,4 +60,6 @@ x-Create the cli option for mfa arn and other most important options.
 - Take the aws region from the env variable: AWS_DEFAULT_REGION, if it exists. 
 - Take the aws region from aws/credentials file: AWS_DEFAULT_REGION, if it exists. 
 - Tests
-- Profile: mfa-dev, mfa-stage
+x- Multiple profiles: mfa-dev, mfa-stage
+
+- Organize the mfa- blocks with always one line between blocks

@@ -25,6 +25,6 @@ x- Release
 
 - Versio
 
-- Custom profile name cli interface: mfa-dev, mfa-stage
-
+x- Multiple profiles name cli interface: mfa-dev, mfa-stage
 - token period cli interface
+- Organize the mfa- blocks with always one line between blocks
