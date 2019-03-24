@@ -18,6 +18,8 @@ parser.add_argument('--mfa', action='store', dest='mfa_arn', required=True,
 parser.add_argument('--region', action='store', dest='region', required=True,
                     help='Provide a aws region ex: eu-central-1, us-east-1 ...')
 
+parser.add_argument('--profile', action='store', dest='profile', required=True,
+                    help='Provide the profile ex: aws-stage, mfa-prod')
 
 # ------------  Variables ----------------------------- #
 
@@ -30,7 +32,8 @@ AWS_CREDENTIALS_TEMPLATE_FOLDER = dirname(realpath(__file__)) + "/templates"
 
 MFA_SERIAL_NUMBER=ARGS.mfa_arn
 AWS_REGION_CREDENTIALS=ARGS.region
-
+AWS_PROFILE=ARGS.profile
+MFA_PROFILE_BLOCK = "["+AWS_PROFILE+"]"+"\n"
 # -------- Warning messages ---------------------------- #
 
 WARNING_CREDENTIALS_MESSAGE = "[default]\nAWS_ACCESS_KEY_ID=< AWS_ACCESS_KEY > \
@@ -93,6 +96,7 @@ def get_temp_credentials():
   temp_credentials["AWS_SECRET_ACCESS_KEY"] = raw_temp_credentials["SecretAccessKey"]
   temp_credentials["SESSION_TOKEN"] = raw_temp_credentials["SessionToken"]
   temp_credentials["AWS_REGION"] =  AWS_REGION_CREDENTIALS
+  temp_credentials["PROFILE"] =  AWS_PROFILE
 
   return(temp_credentials)
 
@@ -118,7 +122,7 @@ def configuring_temporary_credentials(temp_credentials):
 def cleaning_config_file(lines):
   """ Cleaning the config file"""
 
-  mfa_index = lines.index("[mfa]\n")
+  mfa_index = lines.index(MFA_PROFILE_BLOCK)
   mfa_end_index = mfa_index + 5
 
   start_lines = lines[:mfa_index]
@@ -135,8 +139,9 @@ def main():
 
   with open(dest_config_file, "r") as file:
     lines = file.readlines()
+    print("Lines: {}".format(lines))
 
-  if '[mfa]\n' in lines:
+  if MFA_PROFILE_BLOCK in lines:
     cleaning_config_file(lines)
 
   temp_credentials = get_temp_credentials()

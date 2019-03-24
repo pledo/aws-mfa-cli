@@ -28,7 +28,7 @@ $ export AWS_ACCESS_KEY_ID=<Your-Keys-Here> ; export AWS_SECRET_ACCESS_KEY=<Your
 4- Run the command providing your mfa arn and region
 
 ```
-$ aws-mfa-cli --mfa arn:aws:iam::<Account-Number>:mfa/<Your-User-Name> --region=us-east-1
+$ aws-mfa-cli --mfa arn:aws:iam::<Account-Number>:mfa/<Your-User-Name> --region=us-east-1 --profile mfa-dev
 ```
 
 5- Check your ~/.aws/credentials, It should have a profile block like that:
@@ -37,7 +37,7 @@ $ aws-mfa-cli --mfa arn:aws:iam::<Account-Number>:mfa/<Your-User-Name> --region=
 Here should have your default configuration.
 THe script will just create the [mfa] block
 
-[mfa]
+[mfa-dev] **here could be: mfa-stage for example**
 AWS_ACCESS_KEY_ID=< With the temporary key >
 AWS_SECRET_ACCESS_KEY=<...>
 AWS_SESSION_TOKEN=<...>
@@ -47,7 +47,7 @@ AWS_DEFAULT_REGION=<...>
 6- Test the aws cli with the mfa profile, for example:
 
 ```
-$ aws --profile mfa s3 ls
+$ aws --profile mfa-dev s3 ls
 ```
 
 RoadMap:
