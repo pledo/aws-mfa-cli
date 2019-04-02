@@ -1,6 +1,7 @@
 #!/bin/python3
 
 import boto3
+import re
 import argparse
 from sys import exit
 from shutil import copyfile
@@ -114,6 +115,7 @@ def configuring_temporary_credentials(temp_credentials):
   template = env.get_template(template_file_name)
 
   output = template.render(credentials=temp_credentials)
+
   with open(dest_config_file, "a") as f:
        f.write(output)
 
@@ -129,10 +131,39 @@ def cleaning_config_file(lines):
   
   end_lines = lines[mfa_end_index:]
   lines = start_lines + end_lines
+  
+  # Call the formating function organize
+  #lines = formating_config_file(lines)ß
+  
   with open(dest_config_file, "w") as f:
        f.writelines(lines)
 
-# -------- Main function ------------------------------ #
+# -------- Formating the config file ------------------- #
+def formating_config_file(lines):
+  """ Formating the config file at the end of the process """
+  blocks_start = []
+  pattern = r"\[.*?\]\n"
+  for line in lines:
+      match = re.match(pattern, line)
+      if match:
+          blocks_start.append(match.string)
+  print(blocks_start)
+  blocks_start.remove(blocks_start[0])
+  
+  for block in blocks_start:
+    block_index = lines.index(block)
+    before_block = block_index - 1
+    if lines[before_block] != '\n':
+      lines.insert(before_block, '\n')
+
+  #print("Last element: {}".format(lines[-1]))
+  #if lines[-1] != '\n':
+  #  lines.append('\n')
+
+  print("List formatted: {}".format(lines))
+  return(lines)
+
+# -------- Main function   ----------------------------- #
 
 def main():
   check_aws_credentials_file()
