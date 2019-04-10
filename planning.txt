@@ -28,3 +28,7 @@ x- Release
 x- Multiple profiles name cli interface: mfa-dev, mfa-stage
 - token period cli interface
 - Organize the mfa- blocks with always one line between blocks
+- How the user can update the aws-mfa-cli? webhook?
+x- Option for the cli get a specific profile on ~/.aws/credentials:
+  https://boto3.amazonaws.com/v1/documentation/api/latest/guide/configuration.html#shared-credentials-file
+  
