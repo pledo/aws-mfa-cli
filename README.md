@@ -1,20 +1,25 @@
 ## Usage:
 
-1- Clone the project and enter into the project's folder.
+1- Install an MFA app in your Android or iPhone, my suggestion is https://authy.com/
+
+2- After that, you should enable the MFA for your IAM user:
+   https://www.youtube.com/watch?v=A3AObXBJ4Lw 
+
+3- Clone the project and enter into the project's folder.
 ```
  $ git clone  https://github.com/pledo/aws-mfa-cli.git ; cd aws-mfa-cli
 ```
 
-2- Intall the command cli
+4- Install the command cli
 ```
 $ python3 setup.py install
 ```
 
-3- Configure your ~/.aws/credentials with your keys and region, for example:
+5- Configure your ~/.aws/credentials with your keys and region, for example:
 ```
 ~/.aws.credentials:
 
-[default]
+[default] # you can use a profile for example: [production] instead of [defatul]
 AWS_ACCESS_KEY_ID=< AWS_ACCESS_KEY >
 AWS_SECRET_ACCESS_KEY=< AWS_SECRET_ACCESS_KEY >
 AWS_DEFAULT_REGION=us-east-1
@@ -22,39 +27,54 @@ AWS_DEFAULT_REGION=us-east-1
 Or export your keys, running this line in your terminal
 
 ```
-$ export AWS_ACCESS_KEY_ID=<Your-Keys-Here> ; export AWS_SECRET_ACCESS_KEY=<Your-Keys-Here> ; export AWS_DEFAULT_REGION=<AWS-Region-Here>
+$ export AWS_ACCESS_KEY_ID=<Your-Keys-Here> ; export AWS_SECRET_ACCESS_KEY=<Your-Keys-Here> ; export AWS_DEFAULT_REGION=us-east-1
 ```
 
-4- Run the command providing your mfa arn and region
+Or you can export the profile you are using to access the AWS account, for example, if in your ~/.aws/credentials  your have a profile
+called [aws-prod] you can run:
 
 ```
-$ aws-mfa-cli --mfa arn:aws:iam::<Account-Number>:mfa/<Your-User-Name> --region=us-east-1 --profile mfa-dev
+$export AWS_PROFILE=aws-prod
 ```
 
-5- Check your ~/.aws/credentials, It should have a profile block like that:
+
+6- Run the command providing your mfa arn and region.
+
+```
+$ aws-mfa-cli --mfa arn:aws:iam::<AccountNumber>:mfa/<Your-User-Name> --region=eu-central-1 --profile mfa-prod
+```
+
+7- Check your ~/.aws/credentials, It should have a profile block like that:
 ```
 [default]
 Here should have your default configuration.
 THe script will just create the [mfa] block
 
-[mfa-dev] **here could be: mfa-stage for example**
+[mfa-prod] **here could be: mfa-stage for example**
 AWS_ACCESS_KEY_ID=< With the temporary key >
 AWS_SECRET_ACCESS_KEY=<...>
 AWS_SESSION_TOKEN=<...>
 AWS_DEFAULT_REGION=<...>
 ```
 
-6- Test the aws cli with the mfa profile, for example:
+8- Test the aws cli with the mfa profile, for example:
 
 ```
-$ aws --profile mfa-dev s3 ls
+$ aws --profile mfa-prod s3 ls
 ```
+or you can export the mfa-prod profile and remove the --profile from the aws cli
+
+```
+$ export AWS_PRODILE=mfa-prod
+$ aws s3 ls
+```
+
 
 RoadMap:
 
-x-Instalation config
+x-Installation config
 x-Remove only the [mfa] block, keep everything after. 
-x-Create a description for README explaing the script. 
+x-Create a description for README explaining the script. 
 x-Create the cli option for mfa arn and other most important options. 
 
 - Take the aws region from the env variable: AWS_DEFAULT_REGION, if it exists. 

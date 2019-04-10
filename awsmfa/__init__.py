@@ -147,7 +147,7 @@ def formating_config_file(lines):
       match = re.match(pattern, line)
       if match:
           blocks_start.append(match.string)
-  print(blocks_start)
+  #print(blocks_start)
   blocks_start.remove(blocks_start[0])
   
   for block in blocks_start:
@@ -160,7 +160,7 @@ def formating_config_file(lines):
   #if lines[-1] != '\n':
   #  lines.append('\n')
 
-  print("List formatted: {}".format(lines))
+  #print("List formatted: {}".format(lines))
   return(lines)
 
 # -------- Main function   ----------------------------- #
@@ -170,7 +170,7 @@ def main():
 
   with open(dest_config_file, "r") as file:
     lines = file.readlines()
-    print("Lines: {}".format(lines))
+    #print("Lines: {}".format(lines))
 
   if MFA_PROFILE_BLOCK in lines:
     cleaning_config_file(lines)
