@@ -8,7 +8,7 @@ setup(
     long_description_content_type='text/markdown',
     license='MIT',
     author='Paulo Ledo',
-    author_email='paulo.ledo@gmail.com',
+    author_email='paulofledo@gmail.com',
     packages=find_packages(),
     package_data={'awsmfa': ['default_template/credentials', 'templates/credentials']},
     scripts=['aws-mfa-cli'],
