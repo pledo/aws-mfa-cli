@@ -22,6 +22,9 @@ parser.add_argument('--region', action='store', dest='region', required=True,
 parser.add_argument('--profile', action='store', dest='profile', required=True,
                     help='Provide the profile ex: aws-stage, mfa-prod')
 
+parser.add_argument('--my-profile', action='store', dest='my_profile', required=False,
+                    help='Provide to aws-mfa-cli local profile ex: [my-prod-account]')
+
 # ------------  Variables ----------------------------- #
 
 ARGS = parser.parse_args()
@@ -34,7 +37,9 @@ AWS_CREDENTIALS_TEMPLATE_FOLDER = dirname(realpath(__file__)) + "/templates"
 MFA_SERIAL_NUMBER=ARGS.mfa_arn
 AWS_REGION_CREDENTIALS=ARGS.region
 AWS_PROFILE=ARGS.profile
+MY_PROFILE=ARGS.my_profile
 MFA_PROFILE_BLOCK = "["+AWS_PROFILE+"]"+"\n"
+
 # -------- Warning messages ---------------------------- #
 
 WARNING_CREDENTIALS_MESSAGE = "[default]\nAWS_ACCESS_KEY_ID=< AWS_ACCESS_KEY > \
@@ -83,8 +88,13 @@ def get_temp_credentials():
   """ Getting temporary credentials """
 
   mfa_TOTP = input("Enter the MFA code: ")
-
-  client = boto3.client('sts')
+  
+  if MY_PROFILE:
+      session = boto3.Session(profile_name=MY_PROFILE)
+      # from the specific profile ([ my_prod_profile ]) section of ~/.aws/credentials.
+      client = session.client('sts')
+  else:
+      client = boto3.client('sts')
 
   tempCredentials = client.get_session_token(
       SerialNumber=MFA_SERIAL_NUMBER,
