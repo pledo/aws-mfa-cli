@@ -69,6 +69,11 @@ $ export AWS_PRODILE=mfa-prod
 $ aws s3 ls
 ```
 
+If you would like to uninstall the aws-mfa-cli just run:
+
+```
+$ pip3 uninstall aws-mfa-cli
+```
 
 RoadMap:
 
